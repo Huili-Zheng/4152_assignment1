@@ -7,8 +7,21 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+  @all_ratings = Movie.all_ratings
+
+  if params[:ratings]
+    @ratings_to_show = Hash[params[:ratings].map {|ratings| [ratings => 1]} ]
+    session[:ratings] = params[:ratings]
+  else
+    @ratings_to_show = Hash[ @all_ratings.map {|ratings| [ratings => 1]} ]
   end
+  session[:ratings] = session[:ratings] 
+  @ratings = session[:ratings]
+
+  @movies = Movie.with_ratings(@ratings)
+
+end
+
 
   def new
     # default: render 'new' template
@@ -37,6 +50,7 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+
 
   private
   # Making "internal" methods private is not required, but is a common practice.
