@@ -19,6 +19,12 @@ table#movies th.hilite:active{
 }
 .hilite:visited{
   background-color:orange;
+}
+table#movies th.hilite {
+  background-color:orange;
+}
+.hilite a:visited {
+  background-color:orange;
 }*/
 table#movies th.hilite {
   background-color:orange;

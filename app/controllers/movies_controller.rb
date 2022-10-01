@@ -10,16 +10,19 @@ class MoviesController < ApplicationController
   @all_ratings = Movie.all_ratings
   # byebug
   if params[:ratings] 
-    @ratings_to_show = Hash[params[:ratings].map {|ratings| [ratings => 1]} ]
+    @ratings_to_show = Hash[params[:ratings].map {|ratings| [ratings, 1]} ]
     session[:ratings] = params[:ratings]
+  elsif params[:ratings].nil? && !session[:ratings].nil?
+    redirect_to movies_path(:sort => session[:sort], :ratings => session[:ratings])
+  
   else
-    @ratings_to_show = Hash[@all_ratings.map {|ratings| [ratings => 1]} ]
+    @ratings_to_show = Hash[@all_ratings.map {|ratings| [ratings, 1]} ]
+    session[:ratings] = @ratings_to_show
   end
-  @ratings = session[:ratings]
+
   if params[:sort] 
     session[:sort] = params[:sort]
   end
-
   @ratings = session[:ratings]
   @sort = session[:sort]
 
