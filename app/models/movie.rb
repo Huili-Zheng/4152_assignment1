@@ -4,6 +4,10 @@ class Movie < ActiveRecord::Base
   end
 
   def self.with_ratings(ratings)
-    @movies = Movie.where(rating: ratings.keys)
+    @movies = Movie.where("rating in (?)", ratings.keys)
+  end
+
+  def self.with_sort(sort)
+    @movies = Movie.order(sort)
   end
 end
